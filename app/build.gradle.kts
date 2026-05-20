@@ -13,9 +13,6 @@ android {
             minorApiLevel = 1
         }
     }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
 
     defaultConfig {
         applicationId = "com.tpoAppInteractivas.olacheck"
@@ -39,6 +36,9 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+    }
+    kotlinOptions {
+        jvmTarget = "11"
     }
     buildFeatures {
         compose = true
