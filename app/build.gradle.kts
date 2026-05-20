@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.services)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -35,6 +37,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
     buildFeatures {
         compose = true
     }
@@ -58,5 +61,31 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.firestore)
+    // Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+    implementation(libs.hilt.navigation.compose)
+
+// Room
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
+
+// Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.gson)
+    implementation(libs.okhttp.logging)
+
+// Navigation
+    implementation(libs.navigation.compose)
+
+// DataStore
+    implementation(libs.datastore.preferences)
+
+// Glide
+    implementation(libs.glide.compose)
+
+// Firebase Auth
+    implementation(libs.firebase.auth)
 
 }
