@@ -59,8 +59,6 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.firestore)
     // Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
@@ -85,7 +83,9 @@ dependencies {
 // Glide
     implementation(libs.glide.compose)
 
-// Firebase Auth
-    implementation(libs.firebase.auth)
+// Firebase
+    implementation(platform("com.google.firebase:firebase-bom:33.10.0"))
+    implementation("com.google.firebase:firebase-firestore")
+    implementation("com.google.firebase:firebase-auth")
 
 }
