@@ -86,7 +86,5 @@ dependencies {
 // Glide
     implementation(libs.glide.compose)
 
-// Firebase Auth
-    implementation(libs.firebase.auth)
 
 }
