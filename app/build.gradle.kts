@@ -63,6 +63,7 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
+    implementation("com.google.android.gms:play-services-auth:21.3.0")
 
 // Room
     implementation(libs.room.runtime)

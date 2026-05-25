@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.tpoAppInteractivas.olacheck.ui.screens.LoginScreen
 import com.tpoAppInteractivas.olacheck.ui.screens.SplashScreen
 
 object Routes{
@@ -33,8 +34,14 @@ fun NavGraph() {
                 }
             )
         }
-        composable( Routes.LOGIN) {
-
+        composable(Routes.LOGIN) {
+            LoginScreen(
+                onNavigateToHome = {
+                    navController.navigate(Routes.HOME) {
+                        popUpTo(Routes.LOGIN) { inclusive = true }
+                    }
+                }
+            )
         }
 
         composable(Routes.HOME) {
