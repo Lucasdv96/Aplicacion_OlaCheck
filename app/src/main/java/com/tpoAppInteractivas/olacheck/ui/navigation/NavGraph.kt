@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.tpoAppInteractivas.olacheck.ui.screens.HomeScreen
 import com.tpoAppInteractivas.olacheck.ui.screens.LoginScreen
 import com.tpoAppInteractivas.olacheck.ui.screens.SplashScreen
 
@@ -11,6 +12,10 @@ object Routes{
     const val SPLASH_SCREEN = "splash_screen"
     const val LOGIN = "login_screen"
     const val HOME = "home_screen"
+
+    const val DETAIL = "detail/{beachId}"
+
+    fun detailRoute(beachId: String) = "detail/$beachId"
 }
 @Composable
 fun NavGraph() {
@@ -45,6 +50,14 @@ fun NavGraph() {
         }
 
         composable(Routes.HOME) {
+            HomeScreen(
+                onNavigateToDetail = { beachId ->
+                    navController.navigate(Routes.detailRoute(beachId))
+
+                }
+            )
+        }
+        composable(Routes.DETAIL){
 
         }
     }
