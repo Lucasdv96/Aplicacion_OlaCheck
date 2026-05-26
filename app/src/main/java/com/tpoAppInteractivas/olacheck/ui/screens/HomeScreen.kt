@@ -25,7 +25,10 @@ fun HomeScreen(
     val isOnline by viewModel.isOnline.collectAsStateWithLifecycle()
     var searchQuery by remember { mutableStateOf("") }
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .statusBarsPadding()
+    ) {
         if (!isOnline) {
             Surface(color = MaterialTheme.colorScheme.errorContainer) {
                 Text(

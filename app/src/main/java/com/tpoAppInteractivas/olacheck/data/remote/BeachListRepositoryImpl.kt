@@ -25,6 +25,9 @@ class BeachListRepositoryImpl @Inject constructor(
 ) : BeachListRepository {
     override fun getBeaches(): Flow<List<Beach>> = beachDao.getAllBeaches()
 
+    override fun getAllConditions(): Flow<List<BeachConditions>> =
+        beachConditionsDao.getAllConditions()
+
     override fun getConditionsForBeach(beachId: String): Flow<BeachConditions?> =
         beachConditionsDao.getConditionsByBeachId(beachId)
 
