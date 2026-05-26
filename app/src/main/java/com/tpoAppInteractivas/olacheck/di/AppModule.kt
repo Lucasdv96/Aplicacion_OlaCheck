@@ -8,12 +8,13 @@ import com.tpoAppInteractivas.olacheck.data.local.BeachDao
 import com.tpoAppInteractivas.olacheck.data.local.SplashRepositoryImpl
 import com.tpoAppInteractivas.olacheck.data.remote.AuthRepositoryImpl
 import com.tpoAppInteractivas.olacheck.data.remote.BeachListRepositoryImpl
-import com.tpoAppInteractivas.olacheck.data.remote.OpenMeteoService
 import com.tpoAppInteractivas.olacheck.repository.AuthRepository
 import com.tpoAppInteractivas.olacheck.repository.BeachListRepository
 import com.tpoAppInteractivas.olacheck.repository.SplashRepository
 import android.content.Context
 import androidx.room.Room
+import com.tpoAppInteractivas.olacheck.data.remote.MarineService
+import com.tpoAppInteractivas.olacheck.data.remote.WeatherService
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -65,10 +66,18 @@ abstract class AppModule {
 
         @Provides
         @Singleton
-        fun provideOpenMeteoService(): OpenMeteoService = Retrofit.Builder()
+        fun provideWeatherService(): WeatherService = Retrofit.Builder()
             .baseUrl("https://api.open-meteo.com/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(OpenMeteoService::class.java)
+            .create(WeatherService::class.java)
+
+        @Provides
+        @Singleton
+        fun provideMarineService(): MarineService = Retrofit.Builder()
+            .baseUrl("https://marine-api.open-meteo.com/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(MarineService::class.java)
     }
 }

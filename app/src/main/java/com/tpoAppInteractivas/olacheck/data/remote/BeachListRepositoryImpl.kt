@@ -19,7 +19,8 @@ import javax.inject.Singleton
 class BeachListRepositoryImpl @Inject constructor(
     private val beachDao: BeachDao,
     private val beachConditionsDao: BeachConditionsDao,
-    private val openMeteoService: OpenMeteoService,
+    private val weatherService: WeatherService,
+    private val marineService: MarineService,
     private val firestore: FirebaseFirestore,
     @ApplicationContext private val context: Context
 ) : BeachListRepository {
@@ -46,8 +47,8 @@ class BeachListRepositoryImpl @Inject constructor(
         beachDao.insertBeaches(beaches)
         beaches.forEach { beach ->
             try {
-                val marine = openMeteoService.getMarineConditions(beach.latitude, beach.longitude)
-                val weather = openMeteoService.getWeatherConditions(beach.latitude, beach.longitude)
+                val marine = marineService.getMarineConditions(beach.latitude, beach.longitude)
+                val weather = weatherService.getWeatherConditions(beach.latitude, beach.longitude)
                 val conditions = BeachConditions(
                     beachId = beach.id,
                     waterTemp = marine.current?.sea_surface_temperature ?: 0f,
