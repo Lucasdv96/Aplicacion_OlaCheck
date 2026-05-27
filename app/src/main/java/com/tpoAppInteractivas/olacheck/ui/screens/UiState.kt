@@ -1,6 +1,5 @@
 package com.tpoAppInteractivas.olacheck.ui.screens
 
-import perfetto.protos.UiState
 
 sealed class UiState<out T>{
     class Loading<T> : UiState<T>()
