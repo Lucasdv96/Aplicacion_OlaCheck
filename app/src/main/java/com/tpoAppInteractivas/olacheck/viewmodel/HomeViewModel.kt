@@ -23,7 +23,7 @@ class HomeViewModel @Inject constructor(
     private val repository: BeachListRepository
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<UiState<List<BeachWithConditions>>>(UiState.Loading)
+    private val _uiState = MutableStateFlow<UiState<List<BeachWithConditions>>>(UiState.Loading())
     val uiState: StateFlow<UiState<List<BeachWithConditions>>> = _uiState
 
     private val _isOnline = MutableStateFlow(true)
@@ -54,7 +54,7 @@ class HomeViewModel @Inject constructor(
                 }
                 .collect { beachesWithConditions ->
                     if ( beachesWithConditions.isEmpty() && !repository.isOnline()){
-                        _uiState.value = UiState.Offline
+                        _uiState.value = UiState.Offline()
                     }else {
                         _uiState.value = UiState.Success(beachesWithConditions)
                     }
@@ -62,7 +62,7 @@ class HomeViewModel @Inject constructor(
         }
     }
     fun retry(){
-        _uiState.value = UiState.Loading
+        _uiState.value = UiState.Loading()
         loadBeaches()
     }
 }
