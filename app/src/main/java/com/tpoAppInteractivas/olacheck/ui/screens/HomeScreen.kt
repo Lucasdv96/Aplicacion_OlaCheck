@@ -41,10 +41,10 @@ fun HomeScreen(
             )
         }
     ) { padding ->
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .statusBarsPadding()
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
         ) {
             if (!isOnline) {
                 Surface(color = MaterialTheme.colorScheme.errorContainer) {
