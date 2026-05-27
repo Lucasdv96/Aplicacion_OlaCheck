@@ -15,78 +15,114 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tpoAppInteractivas.olacheck.viewmodel.BeachWithConditions
 import com.tpoAppInteractivas.olacheck.viewmodel.HomeViewModel
-import kotlin.properties.ReadOnlyProperty
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     onNavigateToDetail: (String) -> Unit,
+    onNavigateToProfile: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val isOnline by viewModel.isOnline.collectAsStateWithLifecycle()
     var searchQuery by remember { mutableStateOf("") }
 
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .statusBarsPadding()
-    ) {
-        if (!isOnline) {
-            Surface(color = MaterialTheme.colorScheme.errorContainer) {
-                Text(
-                    text = "Modo Offline — mostrando datos guardados",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp),
-                    color = MaterialTheme.colorScheme.onErrorContainer
-                )
-            }
-
-    }
-        OutlinedTextField(
-            value = searchQuery,
-            onValueChange = { searchQuery = it },
-            placeholder = { Text("Buscar playa...") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            singleLine = true,
-            trailingIcon = {
-                if (searchQuery.isNotEmpty()) {
-                    TextButton(onClick = { searchQuery = "" }) {
-                        Text("X")
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("OlaCheck") },
+                actions = {
+                    IconButton(onClick = onNavigateToProfile) {
+                        Icon(Icons.Default.Person, contentDescription = "Perfil")
                     }
                 }
-            }
-        )
-        when (val state = uiState) {
-            is UiState.Loading -> {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator()
+            )
+        }
+    ) { padding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+        ) {
+            if (!isOnline) {
+                Surface(color = MaterialTheme.colorScheme.errorContainer) {
+                    Text(
+                        text = "Modo Offline — mostrando datos guardados",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp),
+                        color = MaterialTheme.colorScheme.onErrorContainer
+                    )
                 }
+
             }
-            is UiState.Error -> {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(text = state.message)
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Button(onClick = { viewModel.retry() }) {
-                            Text("Reintentar")
+            OutlinedTextField(
+                value = searchQuery,
+                onValueChange = { searchQuery = it },
+                placeholder = { Text("Buscar playa...") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                singleLine = true,
+                trailingIcon = {
+                    if (searchQuery.isNotEmpty()) {
+                        TextButton(onClick = { searchQuery = "" }) {
+                            Text("X")
                         }
                     }
                 }
-            }
-            is UiState.Offline -> {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text("Sin conexión y sin datos guardados")
+            )
+            when (val state = uiState) {
+                is UiState.Loading -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
                 }
-            }
-            is UiState.Success -> {
-                val filtered = state.data.filter {
-                    it.beach.name.contains(searchQuery, ignoreCase = true)
+
+                is UiState.Error -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text(text = state.message)
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Button(onClick = { viewModel.retry() }) {
+                                Text("Reintentar")
+                            }
+                        }
+                    }
                 }
-                LazyColumn {
-                    items(filtered) { item ->
-                        BeachCard(item = item, onClick = { onNavigateToDetail(item.beach.id) })
+
+                is UiState.Offline -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text("Sin conexión y sin datos guardados")
+                    }
+                }
+
+                is UiState.Success -> {
+                    val filtered = state.data.filter {
+                        it.beach.name.contains(searchQuery, ignoreCase = true)
+                    }
+                    LazyColumn {
+                        items(filtered) { item ->
+                            BeachCard(
+                                item = item,
+                                onClick = { onNavigateToDetail(item.beach.id) })
+                        }
                     }
                 }
             }
@@ -96,6 +132,8 @@ fun HomeScreen(
 
 
 
+
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun BeachCard(item: BeachWithConditions, onClick: () -> Unit) {
     Card(
@@ -104,21 +142,33 @@ fun BeachCard(item: BeachWithConditions, onClick: () -> Unit) {
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .clickable { onClick() }
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(text = item.beach.name, fontSize = 20.sp, fontWeight = FontWeight.Bold)
-            Spacer(modifier = Modifier.height(8.dp))
-            item.conditions?.let { conditions ->
-                Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                    Text(text = "💧 ${conditions.waterTemp}°C")
-                    Text(text = "🌡 ${conditions.airTemp}°C")
-                    Text(text = "💨 ${conditions.windSpeed} km/h")
-                }
-                Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                    Text(text = "🌊 ${conditions.waveHeight}m")
-                    Text(text = "💦 ${conditions.humidity}%")
-                }
-            } ?: Text(text = "Cargando condiciones...", color = MaterialTheme.colorScheme.outline)
+        Row(modifier = Modifier.padding(16.dp)) {
+            item.beach.imageUrl?.let { url ->
+                GlideImage(
+                    model = url,
+                    contentDescription = item.beach.name,
+                    modifier = Modifier
+                        .size(80.dp)
+                        .clip(RoundedCornerShape(8.dp)),
+                    contentScale = ContentScale.Crop
+                )
+                Spacer(modifier = Modifier.width(12.dp))
+            }
+            Column(modifier = Modifier.weight(1f)) {
+                Text(text = item.beach.name, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                Spacer(modifier = Modifier.height(8.dp))
+                item.conditions?.let { conditions ->
+                    Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                        Text(text = "💧 ${conditions.waterTemp}°C")
+                        Text(text = "🌡 ${conditions.airTemp}°C")
+                        Text(text = "💨 ${conditions.windSpeed} km/h")
+                    }
+                    Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                        Text(text = "🌊 ${conditions.waveHeight}m")
+                        Text(text = "💦 ${conditions.humidity}%")
+                    }
+                } ?: Text(text = "Cargando condiciones...", color = MaterialTheme.colorScheme.outline)
+            }
         }
     }
 }
-

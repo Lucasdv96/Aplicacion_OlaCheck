@@ -25,7 +25,7 @@ class BeachDetailViewModel @Inject constructor(
 ) : ViewModel() {
     private val beachId: String = checkNotNull(savedStateHandle["beachId"])
 
-    private val _uiState = MutableStateFlow<UiState<BeachDetailUiState>>(UiState.Loading)
+    private val _uiState = MutableStateFlow<UiState<BeachDetailUiState>>(UiState.Loading())
     val uiState: StateFlow<UiState<BeachDetailUiState>> = _uiState
 
     init {
@@ -47,7 +47,7 @@ class BeachDetailViewModel @Inject constructor(
         }
     }
     fun retry() {
-        _uiState.value = UiState.Loading
+        _uiState.value = UiState.Loading()
         loadDetail()
     }
 }

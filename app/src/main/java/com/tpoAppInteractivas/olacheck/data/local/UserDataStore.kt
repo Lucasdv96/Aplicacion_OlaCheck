@@ -36,6 +36,23 @@ class UserDataStore @Inject constructor(
             prefs[KEY_PHOTO] = photoUrl
         }
     }
+    data class UserData(
+        val uid: String,
+        val displayName: String,
+        val email: String,
+        val photoUrl: String
+    )
+
+    val userData: Flow<UserData?> = context.dataStore.data
+        .map { prefs ->
+            val uid = prefs[KEY_UID] ?: return@map null
+            UserData(
+                uid = uid,
+                displayName = prefs[KEY_NAME] ?: "",
+                email = prefs[KEY_EMAIL] ?: "",
+                photoUrl = prefs[KEY_PHOTO] ?: ""
+            )
+        }
 
     suspend fun clearUser() {
         context.dataStore.edit { it.clear() }
