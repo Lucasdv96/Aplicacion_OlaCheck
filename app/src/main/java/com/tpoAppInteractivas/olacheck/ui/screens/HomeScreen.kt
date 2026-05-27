@@ -15,7 +15,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tpoAppInteractivas.olacheck.viewmodel.BeachWithConditions
 import com.tpoAppInteractivas.olacheck.viewmodel.HomeViewModel
-import kotlin.properties.ReadOnlyProperty
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
 
 @Composable
 fun HomeScreen(
@@ -43,8 +44,6 @@ fun HomeScreen(
                 .fillMaxSize()
                 .padding(padding)
         ) {
-
-
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -128,6 +127,7 @@ fun HomeScreen(
             }
         }
     }
+}
 
 
 
