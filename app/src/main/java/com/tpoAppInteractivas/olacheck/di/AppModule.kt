@@ -26,6 +26,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 import com.tpoAppInteractivas.olacheck.data.remote.ProfileRepositoryImpl
 import com.tpoAppInteractivas.olacheck.repository.ProfileRepository
+import com.tpoAppInteractivas.olacheck.data.remote.BeachDetailRepositoryImpl
+import com.tpoAppInteractivas.olacheck.repository.BeachDetailRepository
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -42,6 +44,10 @@ abstract class AppModule {
     @Binds
     @Singleton
     abstract fun bindBeachListRepository(impl: BeachListRepositoryImpl): BeachListRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindBeachDetailRepository(impl: BeachDetailRepositoryImpl): BeachDetailRepository
 
     @Binds
     @Singleton

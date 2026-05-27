@@ -69,7 +69,7 @@ fun NavGraph() {
             arguments = listOf(navArgument("beachId") { type = NavType.StringType })
         ) {
             BeachDetailScreen(
-                onNavigateBack = { navController.popBackStack() }
+                onNavigateBack = { navController.navigateUp() }
             )
         }
         composable(Routes.PROFILE) {
@@ -79,7 +79,7 @@ fun NavGraph() {
                         popUpTo(0) { inclusive = true }
                     }
                 },
-                onNavigateBack = { navController.popBackStack() }
+                onNavigateBack = { navController.navigateUp() }
             )
         }
     }
