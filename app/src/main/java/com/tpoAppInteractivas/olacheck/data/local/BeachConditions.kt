@@ -25,3 +25,5 @@ data class BeachConditions(
     val humidity: Float = 0f,
     val fetchedAt: Long = 0L
 )
+
+

@@ -19,6 +19,7 @@ glide-compose = "1.0.0-beta01"
 firebase-auth = "33.10.0"
 ksp = "2.2.10-2.0.2"
 hilt-navigation-compose = "1.2.0"
+benchmarkCommon = "1.4.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -50,6 +51,7 @@ datastore-preferences = { group = "androidx.datastore", name = "datastore-prefer
 glide-compose = { group = "com.github.bumptech.glide", name = "compose", version.ref = "glide-compose" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebase-auth" }
 hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
+androidx-benchmark-common = { group = "androidx.benchmark", name = "benchmark-common", version.ref = "benchmarkCommon" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

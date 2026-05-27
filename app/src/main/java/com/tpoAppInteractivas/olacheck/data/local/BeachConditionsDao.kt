@@ -21,3 +21,4 @@ interface BeachConditionsDao {
     @Query("SELECT * FROM beach_conditions")
     fun getAllConditions(): Flow<List<BeachConditions>>
 }
+

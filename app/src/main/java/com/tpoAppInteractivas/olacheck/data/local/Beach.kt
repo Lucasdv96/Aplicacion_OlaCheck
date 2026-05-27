@@ -12,3 +12,5 @@ data class Beach(
     val imageUrl: String? = null,
     val lastUpdated: Long = 0L
 )
+
+

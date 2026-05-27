@@ -18,3 +18,4 @@ interface BeachDao {
     @Query("SELECT * FROM beach WHERE id = :beachId")
     suspend fun getBeachById(beachId: String): Beach?
 }
+

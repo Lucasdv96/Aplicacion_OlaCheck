@@ -12,3 +12,4 @@ interface BeachListRepository {
     suspend fun refreshBeachData()
     fun isOnline(): Boolean
 }
+
