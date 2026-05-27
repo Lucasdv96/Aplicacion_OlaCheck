@@ -17,6 +17,11 @@ import com.tpoAppInteractivas.olacheck.viewmodel.BeachWithConditions
 import com.tpoAppInteractivas.olacheck.viewmodel.HomeViewModel
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -128,6 +133,7 @@ fun HomeScreen(
 
 
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun BeachCard(item: BeachWithConditions, onClick: () -> Unit) {
     Card(
@@ -136,21 +142,33 @@ fun BeachCard(item: BeachWithConditions, onClick: () -> Unit) {
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .clickable { onClick() }
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(text = item.beach.name, fontSize = 20.sp, fontWeight = FontWeight.Bold)
-            Spacer(modifier = Modifier.height(8.dp))
-            item.conditions?.let { conditions ->
-                Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                    Text(text = "💧 ${conditions.waterTemp}°C")
-                    Text(text = "🌡 ${conditions.airTemp}°C")
-                    Text(text = "💨 ${conditions.windSpeed} km/h")
-                }
-                Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                    Text(text = "🌊 ${conditions.waveHeight}m")
-                    Text(text = "💦 ${conditions.humidity}%")
-                }
-            } ?: Text(text = "Cargando condiciones...", color = MaterialTheme.colorScheme.outline)
+        Row(modifier = Modifier.padding(16.dp)) {
+            item.beach.imageUrl?.let { url ->
+                GlideImage(
+                    model = url,
+                    contentDescription = item.beach.name,
+                    modifier = Modifier
+                        .size(80.dp)
+                        .clip(RoundedCornerShape(8.dp)),
+                    contentScale = ContentScale.Crop
+                )
+                Spacer(modifier = Modifier.width(12.dp))
+            }
+            Column(modifier = Modifier.weight(1f)) {
+                Text(text = item.beach.name, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                Spacer(modifier = Modifier.height(8.dp))
+                item.conditions?.let { conditions ->
+                    Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                        Text(text = "💧 ${conditions.waterTemp}°C")
+                        Text(text = "🌡 ${conditions.airTemp}°C")
+                        Text(text = "💨 ${conditions.windSpeed} km/h")
+                    }
+                    Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                        Text(text = "🌊 ${conditions.waveHeight}m")
+                        Text(text = "💦 ${conditions.humidity}%")
+                    }
+                } ?: Text(text = "Cargando condiciones...", color = MaterialTheme.colorScheme.outline)
+            }
         }
     }
 }
-

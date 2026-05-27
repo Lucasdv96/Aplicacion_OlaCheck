@@ -14,8 +14,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tpoAppInteractivas.olacheck.data.local.BeachConditions
 import com.tpoAppInteractivas.olacheck.viewmodel.BeachDetailViewModel
+import androidx.compose.ui.layout.ContentScale
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.draw.clip
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalGlideComposeApi::class)
 @Composable
 fun BeachDetailScreen(
     onNavigateBack: () -> Unit,
@@ -65,6 +70,17 @@ fun BeachDetailScreen(
                             .padding(16.dp),
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
+                        beach?.imageUrl?.let { url ->
+                            GlideImage(
+                                model = url,
+                                contentDescription = beach.name,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(200.dp)
+                                    .clip(RoundedCornerShape(12.dp)),
+                                contentScale = ContentScale.Crop
+                            )
+                        }
                         Text(
                             text = beach?.name ?: "",
                             fontSize = 28.sp,
