@@ -64,6 +64,7 @@ dependencies {
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
     implementation("com.google.android.gms:play-services-auth:21.3.0")
+    implementation("com.squareup.retrofit2:converter-scalars:2.11.0")
 
 // Room
     implementation(libs.room.runtime)
