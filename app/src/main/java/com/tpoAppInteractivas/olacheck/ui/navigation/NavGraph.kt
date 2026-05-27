@@ -11,9 +11,7 @@ import com.tpoAppInteractivas.olacheck.ui.screens.HomeScreen
 import com.tpoAppInteractivas.olacheck.ui.screens.LoginScreen
 import com.tpoAppInteractivas.olacheck.ui.screens.ProfileScreen
 import com.tpoAppInteractivas.olacheck.ui.screens.SplashScreen
-import androidx.navigation.navArgument
-import com.tpoAppInteractivas.olacheck.ui.screens.BeachDetailScreen
-import com.tpoAppInteractivas.olacheck.ui.screens.ProfileScreen
+
 
 object Routes {
     const val SPLASH = "splash"
