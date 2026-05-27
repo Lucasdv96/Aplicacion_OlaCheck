@@ -15,6 +15,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tpoAppInteractivas.olacheck.viewmodel.BeachWithConditions
 import com.tpoAppInteractivas.olacheck.viewmodel.HomeViewModel
+import kotlin.properties.ReadOnlyProperty
 
 @Composable
 fun HomeScreen(
@@ -92,6 +93,9 @@ fun HomeScreen(
         }
     }
 }
+
+
+
 @Composable
 fun BeachCard(item: BeachWithConditions, onClick: () -> Unit) {
     Card(
@@ -117,3 +121,4 @@ fun BeachCard(item: BeachWithConditions, onClick: () -> Unit) {
         }
     }
 }
+

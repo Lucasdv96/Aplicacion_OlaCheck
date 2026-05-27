@@ -67,3 +67,4 @@ class HomeViewModel @Inject constructor(
         loadBeaches()
     }
 }
+
