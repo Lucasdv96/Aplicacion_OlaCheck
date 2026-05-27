@@ -9,11 +9,16 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import javax.inject.Singleton
+import android.content.Context
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import dagger.hilt.android.qualifiers.ApplicationContext
 
 @Singleton
 class AuthRepositoryImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
-    private val userDataStore: UserDataStore
+    private val userDataStore: UserDataStore,
+    @ApplicationContext private val context: Context
 ) : AuthRepository{
     override suspend fun sigInWithGoogle(account: GoogleSignInAccount): Result<Unit> {
         return try{
@@ -33,6 +38,8 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun signOut() {
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
+        GoogleSignIn.getClient(context, gso).signOut().await()
         firebaseAuth.signOut()
         userDataStore.clearUser()
     }
