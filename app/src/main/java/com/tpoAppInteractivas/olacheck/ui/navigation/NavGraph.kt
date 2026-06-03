@@ -11,6 +11,7 @@ import com.tpoAppInteractivas.olacheck.ui.screens.HomeScreen
 import com.tpoAppInteractivas.olacheck.ui.screens.LoginScreen
 import com.tpoAppInteractivas.olacheck.ui.screens.ProfileScreen
 import com.tpoAppInteractivas.olacheck.ui.screens.SplashScreen
+import com.tpoAppInteractivas.olacheck.ui.screens.CommunityScreen
 
 
 object Routes {
@@ -21,6 +22,9 @@ object Routes {
     const val PROFILE = "profile"
 
     fun detailRoute(beachId: String) = "detail/$beachId"
+
+    const val COMMUNITY = "community/{beachId}"
+    fun communityRoute(beachId: String) = "community/$beachId"
 }
 
 @Composable
@@ -67,9 +71,11 @@ fun NavGraph() {
         composable(
             route = Routes.DETAIL,
             arguments = listOf(navArgument("beachId") { type = NavType.StringType })
-        ) {
+        ) { backStackEntry ->
+            val beachId = backStackEntry.arguments?.getString("beachId") ?: ""
             BeachDetailScreen(
-                onNavigateBack = { navController.navigateUp() }
+                onNavigateBack = { navController.navigateUp() },
+                onNavigateToCommunity = { navController.navigate(Routes.communityRoute(beachId)) }
             )
         }
         composable(Routes.PROFILE) {
@@ -82,5 +88,14 @@ fun NavGraph() {
                 onNavigateBack = { navController.navigateUp() }
             )
         }
+        composable(
+            route = Routes.COMMUNITY,
+            arguments = listOf(navArgument("beachId") { type = NavType.StringType })
+        ) {
+            CommunityScreen(
+                onNavigateBack = { navController.navigateUp() }
+            )
+        }
+
     }
 }

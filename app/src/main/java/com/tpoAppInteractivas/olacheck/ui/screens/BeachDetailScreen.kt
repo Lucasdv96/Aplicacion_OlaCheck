@@ -24,8 +24,9 @@ import androidx.compose.ui.draw.clip
 @Composable
 fun BeachDetailScreen(
     onNavigateBack: () -> Unit,
+    onNavigateToCommunity: () -> Unit,
     viewModel: BeachDetailViewModel = hiltViewModel()
-) {
+){
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     Scaffold(
@@ -95,6 +96,13 @@ fun BeachDetailScreen(
                             ConditionItem(label = "Período de olas", value = "${it.wavePeriod} s")
                             ConditionItem(label = "Humedad", value = "${it.humidity}%")
                         } ?: CircularProgressIndicator()
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Button(
+                        onClick = onNavigateToCommunity,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text("Comunidad")
                     }
                 }
                 else -> Unit

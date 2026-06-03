@@ -28,6 +28,8 @@ import com.tpoAppInteractivas.olacheck.data.remote.ProfileRepositoryImpl
 import com.tpoAppInteractivas.olacheck.repository.ProfileRepository
 import com.tpoAppInteractivas.olacheck.data.remote.BeachDetailRepositoryImpl
 import com.tpoAppInteractivas.olacheck.repository.BeachDetailRepository
+import com.tpoAppInteractivas.olacheck.data.remote.CommunityRepositoryImpl
+import com.tpoAppInteractivas.olacheck.repository.CommunityRepository
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -54,6 +56,10 @@ abstract class AppModule {
     abstract fun bindProfileRepository(
         impl: ProfileRepositoryImpl
     ): ProfileRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindCommunityRepository(impl: CommunityRepositoryImpl): CommunityRepository
 
     companion object {
 

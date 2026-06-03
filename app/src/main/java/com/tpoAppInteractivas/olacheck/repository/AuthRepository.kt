@@ -8,3 +8,4 @@ interface AuthRepository{
     suspend fun signOut()
     fun isLoggedIn(): Flow<Boolean>
 }
+
