@@ -21,6 +21,16 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.draw.clip
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.ui.graphics.Color
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.tpoAppInteractivas.olacheck.viewmodel.AiViewModel
+import com.tpoAppInteractivas.olacheck.viewmodel.ChatMessage
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalGlideComposeApi::class)
 @Composable
@@ -30,6 +40,19 @@ fun BeachDetailScreen(
     viewModel: BeachDetailViewModel = hiltViewModel()
 ){
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    // controla si el BottomSheet del chat está visible
+    var showAiChat by remember { mutableStateOf(false) }
+    val aiViewModel: AiViewModel = hiltViewModel()
+    val aiMessages by aiViewModel.messages.collectAsStateWithLifecycle()
+    val aiIsLoading by aiViewModel.isLoading.collectAsStateWithLifecycle()
+    val aiInputText by aiViewModel.inputText.collectAsStateWithLifecycle()
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val listState = rememberLazyListState()
+
+// hace scroll al último mensaje cuando llega uno nuevo
+    LaunchedEffect(aiMessages.size) {
+        if (aiMessages.isNotEmpty()) listState.animateScrollToItem(aiMessages.size - 1)
+    }
 
     Scaffold(
         topBar = {
@@ -41,6 +64,7 @@ fun BeachDetailScreen(
                     }
                 }
             )
+
         }
     ) { padding ->
         Box(
@@ -100,6 +124,16 @@ fun BeachDetailScreen(
                         } ?: CircularProgressIndicator()
                         Spacer(modifier = Modifier.height(8.dp))
                         Button(
+                            onClick = {
+                                showAiChat = true
+                                aiViewModel.startChat()
+                            },
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text("Consultar al Asistente IA")
+                        }
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Button(
                             onClick = onNavigateToCommunity,
                             modifier = Modifier.fillMaxWidth()
                         ) {
@@ -111,8 +145,101 @@ fun BeachDetailScreen(
             }
         }
     }
-}
+    if (showAiChat) {
+        ModalBottomSheet(
+            onDismissRequest = { showAiChat = false },
+            sheetState = sheetState,
+            modifier = Modifier.fillMaxHeight(0.85f)
+        ) {
+            Column(modifier = Modifier.fillMaxSize()) {
+                Text(
+                    text = "Agente de Neoprene",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                )
+                HorizontalDivider()
 
+                // lista de mensajes del chat
+                LazyColumn(
+                    state = listState,
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(horizontal = 12.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    contentPadding = PaddingValues(vertical = 12.dp)
+                ) {
+                    items(aiMessages) { message ->
+                        AiChatBubble(message = message)
+                    }
+                    if (aiIsLoading) {
+                        item {
+                            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                                CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                            }
+                        }
+                    }
+                }
+
+                HorizontalDivider()
+                // campo de entrada para preguntas de seguimiento
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    OutlinedTextField(
+                        value = aiInputText,
+                        onValueChange = { aiViewModel.onInputChange(it) },
+                        placeholder = { Text("Preguntá algo...") },
+                        modifier = Modifier.weight(1f),
+                        singleLine = true,
+                        shape = RoundedCornerShape(24.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    IconButton(
+                        onClick = { aiViewModel.sendMessage() },
+                        enabled = !aiIsLoading
+                    ) {
+                        Icon(Icons.AutoMirrored.Filled.Send, contentDescription = "Enviar")
+                    }
+                }
+            }
+        }
+    }
+}
+// Burbuja de mensaje del chat de IA
+// Los mensajes del usuario van a la derecha, las respuestas de Gemini a la izquierda
+@Composable
+fun AiChatBubble(message: ChatMessage) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = if (message.isUser) Arrangement.End else Arrangement.Start
+    ) {
+        Surface(
+            shape = RoundedCornerShape(
+                topStart = 16.dp, topEnd = 16.dp,
+                bottomStart = if (message.isUser) 16.dp else 4.dp,
+                bottomEnd = if (message.isUser) 4.dp else 16.dp
+            ),
+            color = if (message.isUser)
+                MaterialTheme.colorScheme.primary
+            else
+                MaterialTheme.colorScheme.surfaceVariant,
+            modifier = Modifier.widthIn(max = 300.dp)
+        ) {
+            Text(
+                text = message.text,
+                modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                color = if (message.isUser)
+                    MaterialTheme.colorScheme.onPrimary
+                else
+                    MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+    }
+}
 @Composable
 fun ConditionItem(label: String, value: String) {
     Card(modifier = Modifier.fillMaxWidth()) {

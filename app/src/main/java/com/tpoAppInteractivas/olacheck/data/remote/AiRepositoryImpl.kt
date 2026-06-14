@@ -1,6 +1,6 @@
 package com.tpoAppInteractivas.olacheck.data.remote
 
-import com.google.ai.client.generativeai.BuildConfig
+import com.tpoAppInteractivas.olacheck.BuildConfig
 import com.google.ai.client.generativeai.GenerativeModel
 import com.tpoAppInteractivas.olacheck.repository.AiRepository
 import javax.inject.Inject
