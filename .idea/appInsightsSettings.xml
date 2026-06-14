@@ -9,10 +9,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="com.tpoAppInteractivas.olacheck" />
-                  <option name="mobileSdkAppId" value="1:370008410998:android:1a93035cac7245e2354857" />
-                  <option name="projectId" value="olacheckapp" />
-                  <option name="projectNumber" value="370008410998" />
+                  <option name="appId" value="PLACEHOLDER" />
+                  <option name="mobileSdkAppId" value="" />
+                  <option name="projectId" value="" />
+                  <option name="projectNumber" value="" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

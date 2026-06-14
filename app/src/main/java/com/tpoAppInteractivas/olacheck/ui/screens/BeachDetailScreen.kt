@@ -19,13 +19,16 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.draw.clip
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalGlideComposeApi::class)
 @Composable
 fun BeachDetailScreen(
     onNavigateBack: () -> Unit,
+    onNavigateToCommunity: () -> Unit,
     viewModel: BeachDetailViewModel = hiltViewModel()
-) {
+){
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     Scaffold(
@@ -95,6 +98,13 @@ fun BeachDetailScreen(
                             ConditionItem(label = "Período de olas", value = "${it.wavePeriod} s")
                             ConditionItem(label = "Humedad", value = "${it.humidity}%")
                         } ?: CircularProgressIndicator()
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Button(
+                            onClick = onNavigateToCommunity,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text("Comunidad")
+                        }
                     }
                 }
                 else -> Unit
