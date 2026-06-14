@@ -1,14 +1,11 @@
 package com.tpoAppInteractivas.olacheck.viewmodel
 
-import androidx.compose.foundation.pager.PagerState
-import androidx.compose.runtime.MutableState
+
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.ai.client.generativeai.Chat
 import com.tpoAppInteractivas.olacheck.BuildConfig
 import com.google.ai.client.generativeai.GenerativeModel
-import com.tpoAppInteractivas.olacheck.repository.AiRepository
 import com.tpoAppInteractivas.olacheck.repository.BeachDetailRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -68,19 +65,19 @@ class AiViewModel @Inject constructor(
             // Prompt inicial con el contexto de la playa - establece el rol del agente
             // para toda la conversacion
             val contextPrompt = """
-                Sos un experto en surf y condiciones marítimas para playas argentinas.
+               Sos un experto en surf y condiciones marítimas para playas argentinas.
                 Las condiciones actuales de la playa son:
-                - Temperatura del agua: ${'$'}{conditions.waterTemp}°C
-                - Temperatura del aire: ${'$'}{conditions.airTemp}°C
-                - Velocidad del viento: ${'$'}{conditions.windSpeed} km/h
-                - Altura de olas: ${'$'}{conditions.waveHeight} m
-                - Período de olas: ${'$'}{conditions.wavePeriod} s
-                - Humedad: ${'$'}{conditions.humidity}%
+                - Temperatura del agua: ${conditions.waterTemp}°C
+                - Temperatura del aire: ${conditions.airTemp}°C
+                - Velocidad del viento: ${conditions.windSpeed} km/h
+                - Altura de olas: ${conditions.waveHeight} m
+                - Período de olas: ${conditions.wavePeriod} s
+                - Humedad: ${conditions.humidity}%
                 
                 Dá una recomendación inicial sobre el tipo de traje y las condiciones.
                 Luego el usuario puede hacerte preguntas de seguimiento.
                 Respondé siempre en español, de forma concisa.
-                """.trimIndent()
+            """.trimIndent()
 
             try{
                 val response = chat.sendMessage(contextPrompt)
