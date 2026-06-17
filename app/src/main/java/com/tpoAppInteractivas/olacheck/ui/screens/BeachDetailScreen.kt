@@ -25,6 +25,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.automirrored.filled.Send
+import androidx.compose.material.icons.filled.Psychology
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.ui.graphics.Color
@@ -64,8 +65,21 @@ fun BeachDetailScreen(
                     }
                 }
             )
-
-        }
+        },
+        floatingActionButton = {
+            if (uiState is UiState.Success) {
+                FloatingActionButton(
+                    onClick = {
+                        showAiChat = true
+                        aiViewModel.startChat()
+                    },
+                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                ) {
+                    Icon(Icons.Default.Psychology, contentDescription = "Consultar IA")
+                }
+            }
+        },
+        floatingActionButtonPosition = FabPosition.End
     ) { padding ->
         Box(
             modifier = Modifier
@@ -122,16 +136,6 @@ fun BeachDetailScreen(
                             ConditionItem(label = "Período de olas", value = "${it.wavePeriod} s")
                             ConditionItem(label = "Humedad", value = "${it.humidity}%")
                         } ?: CircularProgressIndicator()
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Button(
-                            onClick = {
-                                showAiChat = true
-                                aiViewModel.startChat()
-                            },
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Text("Consultar al Asistente IA")
-                        }
                         Spacer(modifier = Modifier.height(4.dp))
                         Button(
                             onClick = onNavigateToCommunity,
