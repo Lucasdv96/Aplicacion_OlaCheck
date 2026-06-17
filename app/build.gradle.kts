@@ -23,7 +23,13 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        val geminiKey = project.findProperty("GEMINI_API_KEY")?.toString() ?: ""
+        val geminiKey = rootProject.file("local.properties")
+            .takeIf { it.exists() }
+            ?.readLines()
+            ?.firstOrNull { it.startsWith("GEMINI_API_KEY=") }
+            ?.substringAfter("=")
+            ?.trim()
+            ?: ""
         buildConfigField("String", "GEMINI_API_KEY", "\"$geminiKey\"")
 
     }

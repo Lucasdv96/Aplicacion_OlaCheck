@@ -41,7 +41,7 @@ class AiViewModel @Inject constructor(
 
     //Modelo gemini inicializando con la API key desde buildconfig
     private val model = GenerativeModel(
-        modelName =  "gemini-1.5-flash",
+        modelName = "gemini-2.5-flash",
         apiKey = BuildConfig.GEMINI_API_KEY
     )
 
@@ -50,6 +50,7 @@ class AiViewModel @Inject constructor(
 
     // inicia la conversacion enviando las condiciones de la playa como contexto inicial
     fun startChat(){
+        android.util.Log.d("AiViewModel", "API Key length: ${BuildConfig.GEMINI_API_KEY.length}")
         viewModelScope.launch {
             _isLoading.value = true
 
@@ -83,7 +84,8 @@ class AiViewModel @Inject constructor(
                 val response = chat.sendMessage(contextPrompt)
                 val text = response.text ?: "Sin respuesta"
                 _messages.value = listOf(ChatMessage(text, isUser = false))
-            } catch (e: Exception){
+            } catch (e: Exception) {
+                android.util.Log.e("AiViewModel", "Error en startChat", e)
                 _messages.value = listOf(ChatMessage("Error al conectar con el asistente", isUser = false))
             }
             _isLoading.value = false
@@ -109,9 +111,10 @@ class AiViewModel @Inject constructor(
                 val response = chat.sendMessage(text)
                 val reply = response.text ?: "Sin respuesta"
                 _messages.value = _messages.value + ChatMessage(reply, isUser = false)
-            } catch (e: Exception){
-                _messages.value = _messages.value + ChatMessage("Error al obtener respuesta.", isUser = false)
-            }
+            } catch (e: Exception) {
+            android.util.Log.e("AiViewModel", "Error en sendMessage", e)
+            _messages.value = _messages.value + ChatMessage("Error al obtener respuesta.", isUser = false)
+        }
             _isLoading.value = false
         }
     }
