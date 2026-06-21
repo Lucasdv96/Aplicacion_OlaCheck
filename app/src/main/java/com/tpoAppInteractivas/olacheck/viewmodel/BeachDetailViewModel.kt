@@ -34,20 +34,40 @@ class BeachDetailViewModel @Inject constructor(
 
     private fun loadDetail() {
         viewModelScope.launch {
+            // carga los datos del cache de Room inmediatamente
+            val cachedBeach = repository.getBeachById(beachId)
+            val cachedConditions = repository.getConditionsForBeach(beachId)
+
+            // intenta refrescar desde la API en segundo plano
             try {
                 repository.refreshConditions(beachId)
-                val beach = repository.getBeachById(beachId)
-                val conditions = repository.getConditionsForBeach(beachId)
-                _uiState.value = UiState.Success(
-                    BeachDetailUiState(beach = beach, conditions = conditions)
-                )
             } catch (e: Exception) {
-                _uiState.value = UiState.Error(e.message ?: "Error al cargar detalle")
+                // si no hay conexion y tampoco datos guardados, muestra offline
+                if(cachedBeach == null){
+                    _uiState.value = UiState.Offline()
+                    return@launch
+                }
+                //Si hay cache, continua y meustra los datos guardados
             }
+             // lee los datos finales del room(frescos o del cache)
+            val beach = repository.getBeachById(beachId)
+            val conditions = repository.getConditionsForBeach(beachId)
+            _uiState.value = UiState.Success(
+                BeachDetailUiState(
+                    beach = beach,
+                    conditions = conditions
+                )
+            )
+
         }
+
+
     }
     fun retry() {
         _uiState.value = UiState.Loading()
         loadDetail()
+
+
     }
 }
+
