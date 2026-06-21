@@ -54,6 +54,9 @@ android {
         buildConfig = true
     }
 }
+tasks.withType<Test> {
+    jvmArgs("-Xshare:off")
+}
 
 dependencies {
     implementation(libs.androidx.core.ktx)
