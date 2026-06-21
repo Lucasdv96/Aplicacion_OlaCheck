@@ -55,7 +55,10 @@ android {
     }
 }
 tasks.withType<Test> {
-    jvmArgs("-Xshare:off")
+    // Workaround Windows: el PATH del sistema tiene rutas con espacios (Program Files)
+    // que rompen java.library.path al correr los tests. Lo dejamos vacío para que
+    // el plugin solo agregue las carpetas jniLibs (sin espacios).
+    systemProperty("java.library.path", "")
 }
 
 dependencies {
