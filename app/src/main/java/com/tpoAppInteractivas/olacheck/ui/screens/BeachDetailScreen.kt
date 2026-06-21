@@ -101,6 +101,18 @@ fun BeachDetailScreen(
                         }
                     }
                 }
+                is UiState.Offline -> {
+                    Column(
+                        modifier = Modifier.align(Alignment.Center),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text("No hay conexión a internet", color = Color.Red)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Button(onClick = { viewModel.retry() }) {
+                            Text("Reintentar")
+                        }
+                    }
+                }
                 is UiState.Success -> {
                     val beach = state.data.beach
                     val conditions = state.data.conditions
@@ -152,7 +164,7 @@ fun BeachDetailScreen(
         ModalBottomSheet(
             onDismissRequest = { showAiChat = false },
             sheetState = sheetState,
-            modifier = Modifier.fillMaxHeight(0.85f)
+            modifier = Modifier.fillMaxHeight()
         ) {
             Column(modifier = Modifier
                 .fillMaxSize()
