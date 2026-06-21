@@ -107,4 +107,9 @@ dependencies {
 // AI Agent
     implementation(libs.generativeai)
 
+// Testing
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.1")
+    testImplementation("io.mockk:mockk:1.13.10")
+    testImplementation("app.cash.turbine:turbine:1.1.0")
+    testImplementation("androidx.arch.core:core-testing:2.2.0")
 }
