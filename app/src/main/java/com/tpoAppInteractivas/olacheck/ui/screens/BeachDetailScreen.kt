@@ -29,7 +29,6 @@ import androidx.compose.material.icons.filled.Psychology
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.ui.graphics.Color
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.tpoAppInteractivas.olacheck.viewmodel.AiViewModel
 import com.tpoAppInteractivas.olacheck.viewmodel.ChatMessage
 
@@ -63,23 +62,23 @@ fun BeachDetailScreen(
                     IconButton(onClick = onNavigateBack) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
                     }
+                },
+                // muestra el botón de IA en la barra superior solo cuando los datos están disponibles
+                actions = {
+                    if (uiState is UiState.Success) {
+                        IconButton(onClick = {
+                            showAiChat = true
+                            aiViewModel.startChat()
+                        }) {
+                            Icon(Icons.Default.Psychology, contentDescription = "Consultar IA")
+                        }
+                    }
                 }
+
             )
         },
-        floatingActionButton = {
-            if (uiState is UiState.Success) {
-                FloatingActionButton(
-                    onClick = {
-                        showAiChat = true
-                        aiViewModel.startChat()
-                    },
-                    containerColor = MaterialTheme.colorScheme.primaryContainer
-                ) {
-                    Icon(Icons.Default.Psychology, contentDescription = "Consultar IA")
-                }
-            }
-        },
-        floatingActionButtonPosition = FabPosition.End
+
+
     ) { padding ->
         Box(
             modifier = Modifier
@@ -155,7 +154,10 @@ fun BeachDetailScreen(
             sheetState = sheetState,
             modifier = Modifier.fillMaxHeight(0.85f)
         ) {
-            Column(modifier = Modifier.fillMaxSize()) {
+            Column(modifier = Modifier
+                .fillMaxSize()
+                .imePadding() //Sube el contenido cuando aparece el telcado
+            ) {
                 Text(
                     text = "Agente de Neoprene",
                     fontWeight = FontWeight.Bold,

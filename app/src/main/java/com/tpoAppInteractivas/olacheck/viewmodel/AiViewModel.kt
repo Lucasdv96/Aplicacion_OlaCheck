@@ -78,6 +78,8 @@ class AiViewModel @Inject constructor(
                 Dá una recomendación inicial sobre el tipo de traje y las condiciones.
                 Luego el usuario puede hacerte preguntas de seguimiento.
                 Respondé siempre en español, de forma concisa.
+                Solo respondé preguntas relacionadas al surf, condiciones del mar, condiciones climaticas, o seguridad en el agua. 
+                Si te preguntan algo fuera de ese tema, indicá amablemente que solo podés ayudar con esos temas.
             """.trimIndent()
 
             try{
