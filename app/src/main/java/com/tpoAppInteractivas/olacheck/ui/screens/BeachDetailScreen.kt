@@ -260,7 +260,11 @@ fun AiChatBubble(message: ChatMessage) {
 }
 @Composable
 fun ConditionItem(label: String, value: String) {
-    Card(modifier = Modifier.fillMaxWidth()) {
+    Card(modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+            )
+    ){
         Row(
             modifier = Modifier
                 .fillMaxWidth()

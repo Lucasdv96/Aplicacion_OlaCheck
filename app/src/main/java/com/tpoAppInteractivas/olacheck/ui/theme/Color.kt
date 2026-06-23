@@ -12,3 +12,4 @@ val LightGray    = Color(0xFFF5F5F5)
 // Dark theme
 val NavyBlueDark = Color(0xFF061530)
 val SkyBlueDark  = Color(0xFF00A8E0)
+val CardNavy = Color(0xFF0D2B5E) // azul medio para cards en dark mode

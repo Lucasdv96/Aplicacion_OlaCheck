@@ -22,7 +22,7 @@ import com.bumptech.glide.integration.compose.GlideImage
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-
+import androidx.compose.material3.CardDefaults
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
@@ -140,7 +140,10 @@ fun BeachCard(item: BeachWithConditions, onClick: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp)
-            .clickable { onClick() }
+            .clickable { onClick() },
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        )
     ) {
         Row(modifier = Modifier.padding(16.dp)) {
             item.beach.imageUrl?.let { url ->
