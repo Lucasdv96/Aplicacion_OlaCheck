@@ -12,15 +12,35 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = SkyBlue,
+    onPrimary = NavyBlue,
+    primaryContainer = BrightBlue,
+    onPrimaryContainer = White,
+    secondary = SkyBlueDark,
+    onSecondary = White,
+    background = NavyBlueDark,
+    onBackground = White,
+    surface = NavyBlue,
+    onSurface = White,
+    surfaceVariant = NavyBlue,
+    onSurfaceVariant = LightGray,
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
+    primary = BrightBlue,
+    onPrimary = White,
+    primaryContainer = SkyBlue,
+    onPrimaryContainer = NavyBlue,
+    secondary = SkyBlue,
+    onSecondary = NavyBlue,
+    background = White,
+    onBackground = NavyBlue,
+    surface = LightGray,
+    onSurface = NavyBlue,
+    surfaceVariant = LightGray,
+    onSurfaceVariant = NavyBlue,
+)
+
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -31,13 +51,13 @@ private val LightColorScheme = lightColorScheme(
     onBackground = Color(0xFF1C1B1F),
     onSurface = Color(0xFF1C1B1F),
     */
-)
+
 
 @Composable
 fun OlaCheckTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
