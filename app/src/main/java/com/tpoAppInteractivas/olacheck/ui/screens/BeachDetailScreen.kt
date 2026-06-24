@@ -164,6 +164,7 @@ fun BeachDetailScreen(
         ModalBottomSheet(
             onDismissRequest = { showAiChat = false },
             sheetState = sheetState,
+            containerColor = MaterialTheme.colorScheme.background,
             modifier = Modifier.fillMaxHeight()
         ) {
             Column(modifier = Modifier
@@ -244,7 +245,7 @@ fun AiChatBubble(message: ChatMessage) {
             color = if (message.isUser)
                 MaterialTheme.colorScheme.primary
             else
-                MaterialTheme.colorScheme.surfaceVariant,
+                MaterialTheme.colorScheme.primaryContainer,
             modifier = Modifier.widthIn(max = 300.dp)
         ) {
             Text(
@@ -253,7 +254,7 @@ fun AiChatBubble(message: ChatMessage) {
                 color = if (message.isUser)
                     MaterialTheme.colorScheme.onPrimary
                 else
-                    MaterialTheme.colorScheme.onSurfaceVariant
+                    MaterialTheme.colorScheme.onPrimaryContainer
             )
         }
     }
