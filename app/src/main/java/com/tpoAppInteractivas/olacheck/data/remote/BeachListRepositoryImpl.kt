@@ -33,6 +33,7 @@ class BeachListRepositoryImpl @Inject constructor(
         beachConditionsDao.getConditionsByBeachId(beachId)
 
     override suspend fun refreshBeachData() {
+
         val snapshot = firestore.collection("beaches").get().await()
         val beaches = snapshot.documents.mapNotNull { doc ->
             Beach(
@@ -44,6 +45,8 @@ class BeachListRepositoryImpl @Inject constructor(
                 lastUpdated = System.currentTimeMillis()
             )
         }
+
+
         beachDao.insertBeaches(beaches)
         beaches.forEach { beach ->
             try {

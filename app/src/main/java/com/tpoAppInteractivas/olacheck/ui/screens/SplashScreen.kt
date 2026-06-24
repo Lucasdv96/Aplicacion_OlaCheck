@@ -1,18 +1,21 @@
 package com.tpoAppInteractivas.olacheck.ui.screens
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.room.util.TableInfo
+import com.tpoAppInteractivas.olacheck.R
 import com.tpoAppInteractivas.olacheck.viewmodel.SplashViewModel
-
 @Composable
 fun SplashScreen(
     onNavigateToHome : () -> Unit,
@@ -29,12 +32,55 @@ fun SplashScreen(
             null -> Unit
         }
     }
+    //Fondo con el color primario del tema
     Box (
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.primary)
     ){
-        Text(text = "OlaCheck", fontSize = 32.sp)
+        // logo de la app centrado
+        Column(
+            modifier = Modifier.align(Alignment.Center),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.logoolacheck),
+                contentDescription = "Logo Olacheck",
+                modifier = Modifier.size(400.dp)
+            )
+            Text(
+                text = "Bienvenido a OlaCheck",
+                fontSize = 32.sp,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onPrimary
+            )
+            Text(
+                text = "La Ola te espera, Chequeala",
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onPrimary
+            )
+        }
+        // LOGO DE DEVOLPER ABAJO CENTRADO
+        Column(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 40.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                text = "Desarrollado por Lucas Del Valle",
+                fontSize = 12.sp,
+                color = MaterialTheme.colorScheme.onPrimary.copy(alpha =  0.7f)
+            )
+            Image(
+                painter = painterResource(id = R.drawable.logoldv),
+                contentDescription = "Logo UTN",
+                modifier = Modifier.size(100.dp)
+            )
+
+        }
     }
-
-
 }
