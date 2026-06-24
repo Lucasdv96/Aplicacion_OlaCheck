@@ -1,5 +1,6 @@
 package com.tpoAppInteractivas.olacheck.repository
 
+import android.net.Uri
 import com.tpoAppInteractivas.olacheck.data.local.CommunityPost
 import kotlinx.coroutines.flow.Flow
 
@@ -13,4 +14,7 @@ interface CommunityRepository {
 
     // Publica un nuevo post en Firestore para la playa indicada
     suspend fun sendPost(post: CommunityPost)
+
+    // Sube una imagen a Cloudinary y devuelve la URL pública (https) de la foto
+    suspend fun uploadImage(uri: Uri): String   // ← NUEVO
 }

@@ -32,6 +32,23 @@ android {
             ?: ""
         buildConfigField("String", "GEMINI_API_KEY", "\"$geminiKey\"")
 
+        val cloudinaryCloudName = rootProject.file("local.properties")
+            .takeIf { it.exists() }
+            ?.readLines()
+            ?.firstOrNull { it.startsWith("CLOUDINARY_CLOUD_NAME=") }
+            ?.substringAfter("=")
+            ?.trim()
+            ?: ""
+        buildConfigField("String", "CLOUDINARY_CLOUD_NAME", "\"$cloudinaryCloudName\"")
+
+        val cloudinaryPreset = rootProject.file("local.properties")
+            .takeIf { it.exists() }
+            ?.readLines()
+            ?.firstOrNull { it.startsWith("CLOUDINARY_UPLOAD_PRESET=") }
+            ?.substringAfter("=")
+            ?.trim()
+            ?: ""
+        buildConfigField("String", "CLOUDINARY_UPLOAD_PRESET", "\"$cloudinaryPreset\"")
     }
 
 
@@ -106,5 +123,8 @@ dependencies {
 
 // AI Agent
     implementation(libs.generativeai)
+
+// ExifInterface — para corregir la rotación de fotos tomadas con la cámara
+    implementation("androidx.exifinterface:exifinterface:1.3.7")
 
 }

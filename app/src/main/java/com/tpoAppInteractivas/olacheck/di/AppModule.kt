@@ -27,6 +27,7 @@ import javax.inject.Singleton
 import com.tpoAppInteractivas.olacheck.data.remote.ProfileRepositoryImpl
 import com.tpoAppInteractivas.olacheck.repository.ProfileRepository
 import com.tpoAppInteractivas.olacheck.data.remote.BeachDetailRepositoryImpl
+import com.tpoAppInteractivas.olacheck.data.remote.CloudinaryService
 import com.tpoAppInteractivas.olacheck.repository.BeachDetailRepository
 import com.tpoAppInteractivas.olacheck.data.remote.CommunityRepositoryImpl
 import com.tpoAppInteractivas.olacheck.repository.CommunityRepository
@@ -99,5 +100,13 @@ abstract class AppModule {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(MarineService::class.java)
+
+        @Provides
+        @Singleton
+        fun provideCloudinaryService(): CloudinaryService = Retrofit.Builder()
+            .baseUrl("https://api.cloudinary.com/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(CloudinaryService::class.java)
     }
 }
