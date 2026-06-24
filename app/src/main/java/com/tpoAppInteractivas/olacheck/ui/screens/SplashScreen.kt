@@ -45,13 +45,19 @@ fun SplashScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Image(
-                painter = painterResource(id = R.drawable.LogoOlaCheck),
+                painter = painterResource(id = R.drawable.logoolacheck),
                 contentDescription = "Logo Olacheck",
-                modifier = Modifier.size(200.dp)
+                modifier = Modifier.size(400.dp)
             )
             Text(
                 text = "Bienvenido a OlaCheck",
                 fontSize = 32.sp,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onPrimary
+            )
+            Text(
+                text = "La Ola te espera, Chequeala",
+                fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onPrimary
             )
@@ -70,7 +76,7 @@ fun SplashScreen(
                 color = MaterialTheme.colorScheme.onPrimary.copy(alpha =  0.7f)
             )
             Image(
-                painter = painterResource(id = R.drawable.LogoLDV),
+                painter = painterResource(id = R.drawable.logoldv),
                 contentDescription = "Logo UTN",
                 modifier = Modifier.size(100.dp)
             )
