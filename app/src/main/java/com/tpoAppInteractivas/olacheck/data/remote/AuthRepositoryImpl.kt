@@ -45,4 +45,61 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override fun isLoggedIn(): Flow<Boolean> = userDataStore.isLoggedIn
+
+    // Crea una cuenta nueva con email y contraseña en Firebase Auth
+    override suspend fun registerWithEmail(email: String, password: String): Result<Unit> {
+        return try {
+            val result = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
+            val user = result.user ?: return Result.failure(Exception("Usuario nulo"))
+            // Guardamos los datos en DataStore — sin foto de perfil por defecto
+            userDataStore.saveUser(
+                uid = user.uid,
+                displayName = user.displayName ?: email.substringBefore("@"),
+                email = user.email ?: "",
+                photoUrl = ""
+            )
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(mapFirebaseError(e))
+        }
+    }
+
+    // Inicia sesión con email y contraseña en Firebase Auth
+    override suspend fun signInWithEmail(email: String, password: String): Result<Unit> {
+        return try {
+            val result = firebaseAuth.signInWithEmailAndPassword(email, password).await()
+            val user = result.user ?: return Result.failure(Exception("Usuario nulo"))
+            userDataStore.saveUser(
+                uid = user.uid,
+                displayName = user.displayName ?: email.substringBefore("@"),
+                email = user.email ?: "",
+                photoUrl = user.photoUrl?.toString() ?: ""
+            )
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(mapFirebaseError(e))
+        }
+    }
+
+    // Traduce los códigos de error de Firebase a mensajes legibles para el usuario
+    private fun mapFirebaseError(e: Exception): Exception {
+        val message = when {
+            e.message?.contains("email address is already in use") == true ->
+                "Ese email ya está registrado. Intentá iniciar sesión."
+            e.message?.contains("password is invalid") == true ||
+            e.message?.contains("INVALID_PASSWORD") == true ->
+                "Contraseña incorrecta."
+            e.message?.contains("no user record") == true ||
+            e.message?.contains("USER_NOT_FOUND") == true ->
+                "No existe una cuenta con ese email."
+            e.message?.contains("badly formatted") == true ||
+            e.message?.contains("INVALID_EMAIL") == true ->
+                "El email no tiene un formato válido."
+            e.message?.contains("Password should be at least") == true ||
+            e.message?.contains("WEAK_PASSWORD") == true ->
+                "La contraseña debe tener al menos 6 caracteres."
+            else -> e.message ?: "Error desconocido. Intentá de nuevo."
+        }
+        return Exception(message)
+    }
 }

@@ -10,13 +10,14 @@ import com.tpoAppInteractivas.olacheck.ui.screens.BeachDetailScreen
 import com.tpoAppInteractivas.olacheck.ui.screens.HomeScreen
 import com.tpoAppInteractivas.olacheck.ui.screens.LoginScreen
 import com.tpoAppInteractivas.olacheck.ui.screens.ProfileScreen
+import com.tpoAppInteractivas.olacheck.ui.screens.RegisterScreen
 import com.tpoAppInteractivas.olacheck.ui.screens.SplashScreen
 import com.tpoAppInteractivas.olacheck.ui.screens.CommunityScreen
-
 
 object Routes {
     const val SPLASH = "splash"
     const val LOGIN = "login"
+    const val REGISTER = "register"
     const val HOME = "home"
     const val DETAIL = "detail/{beachId}"
     const val PROFILE = "profile"
@@ -55,6 +56,22 @@ fun NavGraph() {
                     navController.navigate(Routes.HOME) {
                         popUpTo(Routes.LOGIN) { inclusive = true }
                     }
+                },
+                onNavigateToRegister = {
+                    navController.navigate(Routes.REGISTER)
+                }
+            )
+        }
+        composable(Routes.REGISTER) {
+            RegisterScreen(
+                onNavigateToHome = {
+                    // Después del registro exitoso, va a Home limpiando Login y Register del stack
+                    navController.navigate(Routes.HOME) {
+                        popUpTo(Routes.LOGIN) { inclusive = true }
+                    }
+                },
+                onNavigateToLogin = {
+                    navController.navigateUp()
                 }
             )
         }
@@ -96,6 +113,5 @@ fun NavGraph() {
                 onNavigateBack = { navController.navigateUp() }
             )
         }
-
     }
 }

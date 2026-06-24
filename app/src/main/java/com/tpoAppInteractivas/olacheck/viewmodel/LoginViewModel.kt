@@ -30,4 +30,22 @@ class LoginViewModel @Inject constructor(
             }
         }
     }
+
+    // Inicia sesión con email y contraseña
+    fun signInWithEmail(email: String, password: String) {
+        viewModelScope.launch {
+            _uiState.value = AuthUiState.Loading
+            val result = authRepository.signInWithEmail(email, password)
+            _uiState.value = if (result.isSuccess) {
+                AuthUiState.Success
+            } else {
+                AuthUiState.Error(result.exceptionOrNull()?.message ?: "Error desconocido")
+            }
+        }
+    }
+
+    // Resetea el estado para que la UI no quede "colgada" en Error o Success
+    fun resetState() {
+        _uiState.value = AuthUiState.Idle
+    }
 }
