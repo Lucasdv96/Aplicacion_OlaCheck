@@ -98,6 +98,13 @@ class AuthRepositoryImpl @Inject constructor(
             e.message?.contains("Password should be at least") == true ||
             e.message?.contains("WEAK_PASSWORD") == true ->
                 "La contraseña debe tener al menos 6 caracteres."
+            e.message?.contains("network error", ignoreCase = true) == true ||
+            e.message?.contains("Unable to resolve host") == true ||
+            e.message?.contains("NETWORK_ERROR") == true ->
+                "Sin conexión a internet. Verificá tu red e intentá de nuevo."
+            e.message?.contains("too many requests", ignoreCase = true) == true ||
+            e.message?.contains("TOO_MANY_ATTEMPTS") == true ->
+                "Demasiados intentos fallidos. Esperá unos minutos e intentá de nuevo."
             else -> e.message ?: "Error desconocido. Intentá de nuevo."
         }
         return Exception(message)
