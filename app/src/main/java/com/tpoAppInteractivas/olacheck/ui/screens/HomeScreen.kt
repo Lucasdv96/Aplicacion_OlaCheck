@@ -34,6 +34,7 @@ fun HomeScreen(
     val isOnline by viewModel.isOnline.collectAsStateWithLifecycle()
     var searchQuery by remember { mutableStateOf("") }
 
+
     Scaffold(
         topBar = {
             TopAppBar(
