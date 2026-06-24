@@ -38,6 +38,7 @@ fun LoginScreen(
     viewModel: LoginViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val infoMessage by viewModel.infoMessage.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -55,7 +56,8 @@ fun LoginScreen(
                 val account = task.getResult(ApiException::class.java)
                 viewModel.signInWithGoogle(account)
             } catch (e: ApiException) {
-                // el estado de error lo maneja el ViewModel
+                // Si Google Sign-In falla, avisamos al usuario (antes era silencioso)
+                viewModel.onExternalError("No se pudo iniciar sesión con Google. Intentá de nuevo.")
             }
         }
     }
@@ -69,6 +71,14 @@ fun LoginScreen(
                 viewModel.resetState()
             }
             else -> Unit
+        }
+    }
+
+    // Muestra el mensaje informativo (ej: email de recuperación enviado)
+    LaunchedEffect(infoMessage) {
+        infoMessage?.let {
+            snackbarHostState.showSnackbar(it)
+            viewModel.clearInfoMessage()
         }
     }
 
@@ -144,7 +154,21 @@ fun LoginScreen(
                 }
             )
 
-            Spacer(modifier = Modifier.height(20.dp))
+            // Link para recuperar la contraseña — usa el email del campo de arriba
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+                TextButton(onClick = { viewModel.sendPasswordReset(email) }) {
+                    Text(
+                        text = "¿Olvidaste tu contraseña?",
+                        fontSize = 13.sp,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
 
             // Botones de acción o spinner mientras carga
             if (uiState is AuthUiState.Loading) {

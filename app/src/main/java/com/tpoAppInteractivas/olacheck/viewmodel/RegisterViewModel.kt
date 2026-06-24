@@ -21,8 +21,11 @@ class RegisterViewModel @Inject constructor(
     // Registra un nuevo usuario con email y contraseña
     // Valida los campos antes de llamar al repositorio
     fun register(email: String, password: String, confirmPassword: String) {
+        // Limpiamos espacios al inicio/fin del email (comunes por autocompletado en mobile)
+        val cleanEmail = email.trim()
+
         // Validaciones locales antes de ir a Firebase
-        val validationError = validate(email, password, confirmPassword)
+        val validationError = validate(cleanEmail, password, confirmPassword)
         if (validationError != null) {
             _uiState.value = AuthUiState.Error(validationError)
             return
@@ -30,7 +33,7 @@ class RegisterViewModel @Inject constructor(
 
         viewModelScope.launch {
             _uiState.value = AuthUiState.Loading
-            val result = authRepository.registerWithEmail(email, password)
+            val result = authRepository.registerWithEmail(cleanEmail, password)
             _uiState.value = if (result.isSuccess) {
                 AuthUiState.Success
             } else {

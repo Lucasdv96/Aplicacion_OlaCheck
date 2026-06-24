@@ -13,5 +13,8 @@ interface AuthRepository{
 
     // Login con email y contraseña
     suspend fun signInWithEmail(email: String, password: String): Result<Unit>
+
+    // Envía un email para restablecer la contraseña
+    suspend fun sendPasswordReset(email: String): Result<Unit>
 }
 

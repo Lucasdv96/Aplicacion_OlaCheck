@@ -81,6 +81,16 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
+    // Envía un email de restablecimiento de contraseña a la cuenta indicada
+    override suspend fun sendPasswordReset(email: String): Result<Unit> {
+        return try {
+            firebaseAuth.sendPasswordResetEmail(email).await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(mapFirebaseError(e))
+        }
+    }
+
     // Traduce los códigos de error de Firebase a mensajes legibles para el usuario
     private fun mapFirebaseError(e: Exception): Exception {
         val message = when {
