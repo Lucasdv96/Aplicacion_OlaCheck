@@ -244,7 +244,7 @@ fun AiChatBubble(message: ChatMessage) {
             color = if (message.isUser)
                 MaterialTheme.colorScheme.primary
             else
-                MaterialTheme.colorScheme.surfaceVariant,
+                MaterialTheme.colorScheme.primaryContainer,
             modifier = Modifier.widthIn(max = 300.dp)
         ) {
             Text(
@@ -253,7 +253,7 @@ fun AiChatBubble(message: ChatMessage) {
                 color = if (message.isUser)
                     MaterialTheme.colorScheme.onPrimary
                 else
-                    MaterialTheme.colorScheme.onSurfaceVariant
+                    MaterialTheme.colorScheme.onPrimaryContainer
             )
         }
     }
