@@ -124,4 +124,7 @@ dependencies {
 // AI Agent
     implementation(libs.generativeai)
 
+// ExifInterface — para corregir la rotación de fotos tomadas con la cámara
+    implementation("androidx.exifinterface:exifinterface:1.3.7")
+
 }

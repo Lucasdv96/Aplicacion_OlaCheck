@@ -125,9 +125,33 @@ class CommunityRepositoryImpl @Inject constructor(
             bitmap
         }
 
+        // 4.5) Corregimos la rotación según los metadatos EXIF de la foto
+//      La cámara guarda la orientación en los metadatos pero no rota los píxeles
+        val exif = androidx.exifinterface.media.ExifInterface(
+            context.contentResolver.openInputStream(uri)!!
+        )
+        val rotation = when (
+            exif.getAttributeInt(
+                androidx.exifinterface.media.ExifInterface.TAG_ORIENTATION,
+                androidx.exifinterface.media.ExifInterface.ORIENTATION_NORMAL
+            )
+        ) {
+            androidx.exifinterface.media.ExifInterface.ORIENTATION_ROTATE_90  -> 90f
+            androidx.exifinterface.media.ExifInterface.ORIENTATION_ROTATE_180 -> 180f
+            androidx.exifinterface.media.ExifInterface.ORIENTATION_ROTATE_270 -> 270f
+            else -> 0f
+        }
+        val rotated = if (rotation != 0f) {
+            val matrix = android.graphics.Matrix().apply { postRotate(rotation) }
+            Bitmap.createBitmap(scaled, 0, 0, scaled.width, scaled.height, matrix, true)
+        } else {
+            scaled
+        }
+
+        // 5) Comprimimos a JPEG al 80% de calidad
         // 5) Comprimimos a JPEG al 80% de calidad
         val output = ByteArrayOutputStream()
-        scaled.compress(Bitmap.CompressFormat.JPEG, 80, output)
+        rotated.compress(Bitmap.CompressFormat.JPEG, 80, output)
         return output.toByteArray()
     }
 }

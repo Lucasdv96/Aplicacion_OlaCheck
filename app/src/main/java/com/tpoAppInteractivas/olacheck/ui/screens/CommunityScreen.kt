@@ -148,14 +148,6 @@ fun CommunityScreen(
                         ) {
                             Icon(Icons.Default.Close, contentDescription = "Quitar imagen")
                         }
-                        // Botón cámara
-                        IconButton(onClick = {
-                            // Creamos el archivo temporal y pedimos permiso (o abrimos directo si ya lo tiene)
-                            cameraImageUri = createCameraUri()
-                            cameraPermissionLauncher.launch(android.Manifest.permission.CAMERA)
-                        }) {
-                            Icon(Icons.Default.CameraAlt, contentDescription = "Cámara")
-                        }
                     }
                 }
 
@@ -173,6 +165,14 @@ fun CommunityScreen(
                         )
                     }) {
                         Icon(Icons.Default.Image, contentDescription = "Galería")
+                    }
+                    // Botón cámara
+                    IconButton(onClick = {
+                        // Creamos el archivo temporal y pedimos permiso (o abrimos directo si ya lo tiene)
+                        cameraImageUri = createCameraUri()
+                        cameraPermissionLauncher.launch(android.Manifest.permission.CAMERA)
+                    }) {
+                        Icon(Icons.Default.CameraAlt, contentDescription = "Cámara")
                     }
 
                     OutlinedTextField(
