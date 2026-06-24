@@ -11,5 +11,7 @@ interface BeachListRepository {
     fun getConditionsForBeach(beachId: String): Flow<BeachConditions?>
     suspend fun refreshBeachData()
     fun isOnline(): Boolean
+    fun observeConnectivity(): Flow<Boolean>
+
 }
 
