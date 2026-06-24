@@ -30,11 +30,8 @@ import com.tpoAppInteractivas.olacheck.data.local.CommunityPost
 import com.tpoAppInteractivas.olacheck.viewmodel.CommunityViewModel
 import java.text.SimpleDateFormat
 import java.util.*
-import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material.icons.filled.CameraAlt
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Image
 import androidx.compose.ui.platform.LocalContext
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalGlideComposeApi::class)
