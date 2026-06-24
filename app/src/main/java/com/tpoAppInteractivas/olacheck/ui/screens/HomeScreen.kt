@@ -33,10 +33,20 @@ fun HomeScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val isOnline by viewModel.isOnline.collectAsStateWithLifecycle()
     var searchQuery by remember { mutableStateOf("") }
+    val errorMessage by viewModel.errorMessage.collectAsStateWithLifecycle()
+    val snackbarHostState = remember { SnackbarHostState() }
 
+    // Cuando aparece un mensaje de alerta, mostramos el Snackbar y lo limpiamos.
+    LaunchedEffect(errorMessage) {
+        errorMessage?.let { message ->
+            snackbarHostState.showSnackbar(message)
+            viewModel.clearError()
+        }
+    }
 
 
     Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState)},
         topBar = {
             TopAppBar(
                 title = { Text("OlaCheck") },
