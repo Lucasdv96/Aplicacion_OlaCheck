@@ -38,7 +38,7 @@ class HomeViewModel @Inject constructor(
             if (repository.isOnline()) {
                 try {
                     repository.refreshBeachData()
-                } catch (e: Exception) {
+                }catch (e: Exception) {
                     _uiState.value = UiState.Error(e.message ?: "Error al cargar datos")
                 }
             }

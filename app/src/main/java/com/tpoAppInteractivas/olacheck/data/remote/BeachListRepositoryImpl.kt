@@ -33,9 +33,8 @@ class BeachListRepositoryImpl @Inject constructor(
         beachConditionsDao.getConditionsByBeachId(beachId)
 
     override suspend fun refreshBeachData() {
+
         val snapshot = firestore.collection("beaches").get().await()
-        // LOG TEMPORAL — para diagnosticar el problema de las playas
-        android.util.Log.d("OLACHECK_DEBUG", "Firestore devolvió ${snapshot.size()} documentos")
         val beaches = snapshot.documents.mapNotNull { doc ->
             Beach(
                 id = doc.id,
@@ -46,8 +45,7 @@ class BeachListRepositoryImpl @Inject constructor(
                 lastUpdated = System.currentTimeMillis()
             )
         }
-        // LOG TEMPORAL — cuántas playas pasaron el filtro
-        android.util.Log.d("OLACHECK_DEBUG", "Playas parseadas correctamente: ${beaches.size}")
+
 
         beachDao.insertBeaches(beaches)
         beaches.forEach { beach ->
