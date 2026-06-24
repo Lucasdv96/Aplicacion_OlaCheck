@@ -164,6 +164,7 @@ fun BeachDetailScreen(
         ModalBottomSheet(
             onDismissRequest = { showAiChat = false },
             sheetState = sheetState,
+            containerColor = MaterialTheme.colorScheme.background,
             modifier = Modifier.fillMaxHeight()
         ) {
             Column(modifier = Modifier
